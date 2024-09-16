@@ -4,6 +4,17 @@ import uvicorn
 from database import engine
 from models import Base
 from api import app
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+
+limiter = Limiter(key_func=get_remote_address)
+
+app = FastAPI()
+app.state.limiter = limiter
+
+@app.middleware
+async def rate_limit_middleware(request: Request, call_next):
+    return await limiter.limit_request(request)(call_next)
 
 # Создание таблиц
 async def create_tables():

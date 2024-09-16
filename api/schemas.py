@@ -24,7 +24,7 @@ class User(UserBase):
 class NoteBase(BaseModel):
     title: str
     content: str
-    tags: List[str] = []
+    tags: str
 
 
 class NoteCreate(NoteBase):

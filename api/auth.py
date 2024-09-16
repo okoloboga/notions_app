@@ -1,3 +1,5 @@
+import logging
+
 from datetime import datetime, timedelta
 from typing import Optional
 from fastapi import Depends, HTTPException, status
@@ -10,6 +12,13 @@ from sqlalchemy.future import select
 from models import User
 from schemas import UserCreate
 from database import SessionLocal
+
+logger = logging.getLogger(__name__)
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(filename)s:%(lineno)d #%(levelname)-8s '
+           '[%(asctime)s] - %(name)s - %(message)s')
 
 SECRET_KEY = "your_secret_key"  # замените на ваш секретный ключ
 ALGORITHM = "HS256"
@@ -36,6 +45,9 @@ def get_password_hash(password):
 
 async def get_user(db: AsyncSession, 
                    username: str):
+
+    logger.info(f'get user by username {username}')
+
     result = await db.execute(select(User).where(User.username == username))
     print(result)
     return result.scalar()
@@ -43,6 +55,9 @@ async def get_user(db: AsyncSession,
 
 async def create_user(db: AsyncSession, 
                       user: UserCreate):
+
+    logger.info(f'create user with username: {user.username}')
+
     db_user = User(username=user.username, password=get_password_hash(user.password))
     db.add(db_user)
     await db.commit()
@@ -59,11 +74,17 @@ def create_access_token(data: dict,
         expire = datetime.utcnow() + timedelta(minutes=15)
     to_encode.update({"exp": expire})
     encoded_jwt = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+
+    logger.info(f'created token: {encoded_jwt}')
+
     return encoded_jwt
 
 
 async def get_current_user(token: str = Depends(oauth2_scheme), 
                            db: AsyncSession = Depends(get_db)):
+
+    logger.info(f'getting user by token: {token}')
+                        
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
