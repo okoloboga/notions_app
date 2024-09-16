@@ -1,5 +1,6 @@
 import asyncio
 import uvicorn
+
 from database import engine
 from models import Base
 from api import app
@@ -11,5 +12,5 @@ async def create_tables():
 
 if __name__ == "__main__":
     asyncio.run(create_tables())
-    uvicorn.run(app, host="0.0.0.0", port=8000, reload=True)
+    uvicorn.run(app, host="0.0.0.0", port=8000)
 

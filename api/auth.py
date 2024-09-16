@@ -8,9 +8,8 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 
 from models import User
-from database import get_db
 from schemas import UserCreate
-
+from database import SessionLocal
 
 SECRET_KEY = "your_secret_key"  # замените на ваш секретный ключ
 ALGORITHM = "HS256"
@@ -19,6 +18,11 @@ ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+
+async def get_db() -> AsyncSession:
+    async with SessionLocal() as session:
+        yield session
 
 
 def verify_password(plain_password, 
@@ -33,7 +37,8 @@ def get_password_hash(password):
 async def get_user(db: AsyncSession, 
                    username: str):
     result = await db.execute(select(User).where(User.username == username))
-    return result.scalar_one_or_none()
+    print(result)
+    return result.scalar()
 
 
 async def create_user(db: AsyncSession, 
