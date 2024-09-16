@@ -1,11 +1,9 @@
-from sqlalchemy import create_engine, MetaData
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
 from sqlalchemy.orm import sessionmaker
-from config import get_config, BotConfig, DbConfig
+from config import get_config, DbConfig
 
 
-# Аддресс Базы Данных берём из переменных окружения
+# Адрес Базы Данных берём из переменных окружения
 db_config = get_config(DbConfig, "db")
 
 # На продакшене echo обысно отключаю, что бы логи были чище
