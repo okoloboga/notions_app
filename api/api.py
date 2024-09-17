@@ -1,6 +1,6 @@
 import logging
 
-from fastapi import FastAPI, Depends, HTTPException
+from fastapi import FastAPI, Depends, HTTPException, Request
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
@@ -34,8 +34,9 @@ async def get_db() -> AsyncSession:
 
 
 @app.post("/users/", response_model=User)
-@limiter.limit("5/seconds")
-async def register_user(user: UserCreate,
+@limiter.limit("5/second")
+async def register_user(request: Request,
+                        user: UserCreate,
                         db: AsyncSession = Depends(get_db)):
 
     logger.info(f'Logging user: {user}')
@@ -47,8 +48,9 @@ async def register_user(user: UserCreate,
 
 
 @app.post("/token")
-@limiter.limit("5/seconds")
-async def login(form_data: OAuth2PasswordRequestForm = Depends(),
+@limiter.limit("5/second")
+async def login(request: Request,
+                form_data: OAuth2PasswordRequestForm = Depends(),
                 db: AsyncSession = Depends(get_db)):
 
     logger.info(f'Create token for user: {form_data.username}')
@@ -62,8 +64,9 @@ async def login(form_data: OAuth2PasswordRequestForm = Depends(),
 
 
 @app.get("/notes/", response_model=List[NoteSchema])
-@limiter.limit("5/seconds")
-async def read_notes(skip: int = 0,
+@limiter.limit("5/second")
+async def read_notes(request: Request,
+                     skip: int = 0,
                      limit: int = 10,
                      db: AsyncSession = Depends(get_db),
                      current_user: User = Depends(get_current_user)):
@@ -80,8 +83,9 @@ async def read_notes(skip: int = 0,
 
 
 @app.post("/notes/", response_model=NoteSchema)
-@limiter.limit("5/seconds")
-async def create_note(note: NoteCreate,
+@limiter.limit("5/second")
+async def create_note(request: Request,
+                      note: NoteCreate,
                       db: AsyncSession = Depends(get_db),
                       current_user: User = Depends(get_current_user)):
 
@@ -101,8 +105,9 @@ async def create_note(note: NoteCreate,
 
 
 @app.get("/notes/{note_id}", response_model=NoteSchema)
-@limiter.limit("5/seconds")
-async def read_note(note_id: int,
+@limiter.limit("5/second")
+async def read_note(request: Request,
+                    note_id: int,
                     db: AsyncSession = Depends(get_db)):
 
     logger.info(f'Getting note with id {note_id}')
@@ -114,8 +119,9 @@ async def read_note(note_id: int,
 
 
 @app.put("/notes/{note_id}", response_model=NoteSchema)
-@limiter.limit("5/seconds")
-async def update_note(note_id: int,
+@limiter.limit("5/second")
+async def update_note(request: Request,
+                      note_id: int,
                       note: NoteCreate,
                       db: AsyncSession = Depends(get_db),
                       current_user: User = Depends(get_current_user)):
@@ -135,8 +141,9 @@ async def update_note(note_id: int,
 
 
 @app.delete("/notes/{note_id}", response_model=NoteSchema)
-@limiter.limit("5/seconds")
-async def delete_note(note_id: int, db:
+@limiter.limit("5/second")
+async def delete_note(request: Request,
+                      note_id: int, db:
                       AsyncSession = Depends(get_db)):
     db_note = await db.get(Note, note_id)
     if not db_note:
@@ -148,8 +155,9 @@ async def delete_note(note_id: int, db:
 
 
 @app.get("/notes/tags/{tag_name}", response_model=List[NoteSchema])
-@limiter.limit("5/seconds")
-async def read_notes_by_tag(tag_name: str, db:
+@limiter.limit("5/second")
+async def read_notes_by_tag(request: Request,
+                            tag_name: str, db:
                             AsyncSession = Depends(get_db)):
 
     logger.info(f'Getting notes by tag: {tag_name}')

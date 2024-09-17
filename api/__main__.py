@@ -1,11 +1,14 @@
 import asyncio
 import uvicorn
 
+from slowapi import Limiter
+from slowapi.util import get_remote_address
+from fastapi import FastAPI, Request
+
 from database import engine
 from models import Base
 from api import app
-from slowapi import Limiter
-from slowapi.util import get_remote_address
+
 
 limiter = Limiter(key_func=get_remote_address)
 
