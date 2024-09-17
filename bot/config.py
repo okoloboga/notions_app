@@ -12,7 +12,6 @@ class Config:
     tg_bot: TgBot
 
 
-# Loading BOT_TOKEN from.env
 def load_config(path: str | None = None) -> Config:
     env = Env()
     env.read_env(path)

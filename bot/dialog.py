@@ -14,12 +14,23 @@ dialog = Dialog(
         TextInput(
             id='registration',
             type_factory=str,
-            on_success=registration_complete,
+            on_success=registration_result,
             on_error=wrong_input
             ),
         getter=registration_getter,
-        state=MainSG.start()
+        state=MainSG.registration()
         ),
+    Window(
+        Format('{login}'),
+        TextInput(
+            id='login',
+            type_factory=str,
+            on_success=login_result,
+            on_error=wrong_input
+        ),
+        getter=login_getter,
+        state=MainSG.login()
+    ),
     Window(
         Format('{main_menu}'),
         Button(Format('{button_create_note}'), id='b_create_note', on_click=create_note),

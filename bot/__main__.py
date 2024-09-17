@@ -9,15 +9,15 @@ from aiogram_dialog import setup_dialogs
 from fluentogram import TranslatorHub
 from redis.asyncio.client import Redis
 
-from config import get_config, BotConfig, DbConfig
+from config import Config, load_config
 from dialog import dialog, router, unknown_router
 from utils import TranslatorHub, create_translator_hub
-from middlewares import TranslatorRunnerMiddleware
+from middleware import TranslatorRunnerMiddleware
 
 
 logger = logging.getLogger(__name__)
 
-# Configuration and boot Bot
+# Конфигурация и запуск Бота
 async def main():
 
     # Logging
@@ -25,7 +25,7 @@ async def main():
         level=logging.INFO,
         format='%(filename)s:%(lineno)d #%(levelname)-8s '
                '[%(asctime)s] - %(name)s - %(message)s'
-    )
+               )
     logger.info('Starting Bot')
 
     # Config
@@ -33,8 +33,8 @@ async def main():
                            key_builder=DefaultKeyBuilder(with_destiny=True))
 
     # Init Bot in Dispatcher
-    bot_config = get_config(BotConfig, "bot")
-    bot = Bot(token=bot_config.token.get_secret_value(),
+    config: Config = load_config()
+    bot = Bot(token=config.tg_bot.token,
               default=DefaultBotProperties(parse_mode=ParseMode.HTML))
     dp = Dispatcher(storage=storage)
 

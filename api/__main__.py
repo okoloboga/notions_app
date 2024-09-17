@@ -11,13 +11,13 @@ from api import app
 
 
 limiter = Limiter(key_func=get_remote_address)
-
-app = FastAPI()
 app.state.limiter = limiter
+
 
 @app.middleware
 async def rate_limit_middleware(request: Request, call_next):
     return await limiter.limit_request(request)(call_next)
+
 
 # Создание таблиц
 async def create_tables():
@@ -26,5 +26,5 @@ async def create_tables():
 
 if __name__ == "__main__":
     asyncio.run(create_tables())
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host="127.0.0.1", port=8000)
 
