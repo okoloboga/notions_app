@@ -5,5 +5,5 @@ class MainSG(StateGroup):
     main = State()
     create = State()
     edit = State()
-    search = State()
+    notes_list = State()
     delete = State()
