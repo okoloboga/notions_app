@@ -1,4 +1,5 @@
 import requests
+import logging
 import json
 
 from passlib.context import CryptContext
@@ -26,18 +27,20 @@ async def new_user(username: str,
     }
     response = requests.post(f'{URL}/users', json=json.dumps(params), timeout=1).json()
     answer = response.get("replies")
+
+    logger.info(f'result registration: {answer}')
+
     return answer
 
 
 # Аутентификация
 async def login(username: str,
-                password: str,
-                user_id: int):
+                password: str):
 
     hashed_password = pwd_context.hash(password)
     params = {
         "username": username,
-        "password": password
+        "password": hashed_password
     }
     response = requests.post(f'{URL}/token',
                              json=json.dumps(params), 
@@ -50,6 +53,17 @@ async def login(username: str,
 
 
 # Создание новой записи
+async def create_note(data: dict,
+                      headers: dict):
+    response = requests.post(f'{URL}/notes',
+                             json=data,
+                             headers=headers,
+                             timeout=1).json()
+    answer = response.get("replies")
+
+    logger.info(f'result create_note {answer}')
+
+    return answer
 
 
 # Получение записей

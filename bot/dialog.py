@@ -53,44 +53,72 @@ dialog = Dialog(
         state=MainSG.main()
         ),
     Window(
-        Format('{craete_note}'),
+        Format('{fill_title}'),
         TextInput(
-            id='create',
+            id='fill_title',
             type_factory=str,
-            on_success=check_new_note,
+            on_success=check_title,
             on_error=wrong_input
             ),
-        Button(Format('{button_back}'), id='b_back', on_clik=back),
-        getter=create_getter,
-        state=MainSG.create()
-        )
-    )
-    '''
-    Заготовка для расширения функционала по удалению и редактированию
-    заметок через бота
-
-    Window(
-        Format('{delete_note}'),
-        TextInput(
-            id='delete',
-            type_factory=str,
-            on_success=check_delete_note,
-            on_error=wrong_input
-            ),
-        Button(Format('{button_back}'), id='b_back', on_clik=back),
-        getter=delete_getter,
-        state=MainSG.delete()
+        getter=title_getter,
+        state=MainSG.title()
         ),
     Window(
-        Format('{edit_note}'),
+        Format('{fill_content}'),
         TextInput(
-            id='edit',
+            id='fill_content',
             type_factory=str,
-            on_success=check_edit_note,
+            on_success=check_content,
             on_error=wrong_input
             ),
-        Button(Format('{button_back}'), id='b_back', on_clik=back),
-        getter=edit_getter,
-        state=MainSG.edit()
+        getter=content_getter,
+        state=MainSG.content()
+        ),
+    Window(
+        Format('{fill_tags}'),
+        TextInput(
+            id='fill_tags',
+            type_factory=str,
+            on_success=check_tags,
+            on_error=wrong_input
+            ),
+        getter=tags_getter,
+        state=MainSG.tags()
+        ),
+    Window(
+        Format('{complete_note}'),
+        Button(Format('{button_confirm}'), id='b_confirm', on_cick=confirm),
+        Button(Format('{button_cancel}'), id='b_cancel', on_click=cancel),
+        getter=complete_getter,
+        state=MainSG.complete()
         )
-    '''
+    )
+    
+    # Заготовка для расширения функционала по удалению и редактированию
+    # заметок через бота
+
+    # Window(
+    #     Format('{delete_note}'),
+    #     TextInput(
+    #         id='delete',
+    #         type_factory=str,
+    #         on_success=check_delete_note,
+    #         on_error=wrong_input
+    #         ),
+    #     Button(Format('{button_back}'), id='b_back', on_clik=back),
+    #     getter=delete_getter,
+    #     state=MainSG.delete()
+    #     ),
+    # Window(
+    #     Format('{edit_note}'),
+    #     TextInput(
+    #         id='edit',
+    #         type_factory=str,
+    #         on_success=check_edit_note,
+    #         on_error=wrong_input
+    #         ),
+    #     Button(Format('{button_back}'), id='b_back', on_clik=back),
+    #     getter=edit_getter,
+    #     state=MainSG.edit()
+    #     )
+
