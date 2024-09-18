@@ -6,6 +6,7 @@ from aiogram_dialog.widgets.input.text import TextInput
 from getter import *
 from handler import *
 from states import MainSG
+from services import validate_password
 
 
 dialog = Dialog(
@@ -13,7 +14,7 @@ dialog = Dialog(
         Format('{registration}'),
         TextInput(
             id='registration',
-            type_factory=str,
+            type_factory=validate_password,
             on_success=registration_result,
             on_error=wrong_input
             ),
