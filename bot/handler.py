@@ -7,11 +7,12 @@ from aiogram.types import CallbackQuery, Message, message
 from aiogram.fsm.context import FSMContext
 from aiogram_dialog import DialogManager, StartMode
 from aiogram_dialog.widgets.kbd import Button
+from aiogram_dialog.widgets.input.text import ManagedTextInput
 from redis import asyncio as aioredis
 
 from fluentogram import TranslatorRunner
 from states import MainSG
-from requests import *
+from request import *
 
 
 router = Router()
@@ -294,3 +295,13 @@ async def tags_notes_list(message: Message,
         await dialog_manager.switch_to(state=MainSG.login)
 
 
+# При вводе произошла ошибка валидации данных
+async def wrong_input(callback: CallbackQuery,
+                      widget: ManagedTextInput,
+                      dialog_manager: DialogManager,
+                      result_list: str):
+
+    logger.info(f'User {callback.from_user.id} fills wrong message')
+
+    i18n: TranslatorRunner = dialog_manager.middleware_data.get('i18n')
+    await callback.answer(text=i18n.unknown.message())

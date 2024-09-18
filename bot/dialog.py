@@ -19,7 +19,7 @@ dialog = Dialog(
             on_error=wrong_input
             ),
         getter=registration_getter,
-        state=MainSG.registration()
+        state=MainSG.registration
         ),
     Window(
         Format('{login}'),
@@ -30,7 +30,7 @@ dialog = Dialog(
             on_error=wrong_input
         ),
         getter=login_getter,
-        state=MainSG.login()
+        state=MainSG.login
     ),
     Window(
         Format('{main_menu}'),
@@ -51,7 +51,7 @@ dialog = Dialog(
             on_error=wrong_input
             ),
         getter=main_getter,
-        state=MainSG.main()
+        state=MainSG.main
         ),
     Window(
         Format('{fill_title}'),
@@ -62,7 +62,7 @@ dialog = Dialog(
             on_error=wrong_input
             ),
         getter=title_getter,
-        state=MainSG.title()
+        state=MainSG.title
         ),
     Window(
         Format('{fill_content}'),
@@ -73,7 +73,7 @@ dialog = Dialog(
             on_error=wrong_input
             ),
         getter=content_getter,
-        state=MainSG.content()
+        state=MainSG.content
         ),
     Window(
         Format('{fill_tags}'),
@@ -84,14 +84,14 @@ dialog = Dialog(
             on_error=wrong_input
             ),
         getter=tags_getter,
-        state=MainSG.tags()
+        state=MainSG.tags
         ),
     Window(
         Format('{complete_note}'),
-        Button(Format('{button_confirm}'), id='b_confirm', on_cick=confirm),
+        Button(Format('{button_confirm}'), id='b_confirm', on_click=confirm),
         Button(Format('{button_cancel}'), id='b_cancel', on_click=cancel),
         getter=complete_getter,
-        state=MainSG.complete()
+        state=MainSG.complete
         )
     )
     
@@ -108,7 +108,7 @@ dialog = Dialog(
     #         ),
     #     Button(Format('{button_back}'), id='b_back', on_clik=back),
     #     getter=delete_getter,
-    #     state=MainSG.delete()
+    #     state=MainSG.delete
     #     ),
     # Window(
     #     Format('{edit_note}'),
@@ -120,6 +120,6 @@ dialog = Dialog(
     #         ),
     #     Button(Format('{button_back}'), id='b_back', on_clik=back),
     #     getter=edit_getter,
-    #     state=MainSG.edit()
+    #     state=MainSG.edit
     #     )
 

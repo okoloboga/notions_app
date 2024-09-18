@@ -10,12 +10,15 @@ from fluentogram import TranslatorHub
 from redis.asyncio.client import Redis
 
 from config import Config, load_config
-from dialog import dialog, router, unknown_router
-from utils import TranslatorHub, create_translator_hub
+from dialog import dialog
+from handler import router
+from unknown_router import unknown_router
+from i18n import TranslatorHub, create_translator_hub
 from middleware import TranslatorRunnerMiddleware
 
 
 logger = logging.getLogger(__name__)
+
 
 # Конфигурация и запуск Бота
 async def main():

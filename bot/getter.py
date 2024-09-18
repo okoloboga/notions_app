@@ -42,7 +42,7 @@ async def login_getter(dialog_manager: DialogManager,
     
     logger.info(f'User {username} in login menu')
 
-    return {'login': i18n.login()}
+    return {'login': i18n.login(username=username)}
 
 
 # Главное Меню

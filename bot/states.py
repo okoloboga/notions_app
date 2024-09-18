@@ -1,6 +1,6 @@
-from aiogram.fsm.state import State, StateGroup
+from aiogram.fsm.state import State, StatesGroup
 
-class MainSG(StateGroup):
+class MainSG(StatesGroup):
     registration = State()
     login = State()
     main = State()

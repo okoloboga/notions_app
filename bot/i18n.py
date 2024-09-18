@@ -6,25 +6,23 @@ def create_translator_hub() -> TranslatorHub:
     translator_hub = TranslatorHub(
         {
             "ru": ("ru", "en"),
-            # "en": ("en", "ru")
+            "en": ("en", "ru")
         },
         [
             FluentTranslator(
                 locale="ru",
                 translator=FluentBundle.from_files(
                     locale="ru-RU",
-                    filenames=["locales/ru/LC_MESSAGES/txt.ftl"]
+                    filenames=["bot/locales/ru/LC_MESSAGES/txt.ftl"]
                 )
         ),
-        ''' 
             FluentTranslator(
                 locale="en",
                 translator=FluentBundle.from_files(
                     locale="en-US",
-                    filenames=["locales/en/LC_MESSAGES/txt.ftl"]
+                    filenames=["bot/locales/en/LC_MESSAGES/txt.ftl"]
                 )
             )
-        '''
         ]
     )
 
