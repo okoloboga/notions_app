@@ -8,6 +8,17 @@ A note-taking application built with FastAPI using PostgreSQL, Redis for caching
 - Docker
 - Docker Compose
 
+## Technologies
+
+Backend:
+- FastAPI
+- PostgreSQL + SQLAlchemy
+
+Bot:
+- Aiogram + aiogram_dialog
+- Fluentogram
+- Redis
+
 ## Project Structure
 
 
