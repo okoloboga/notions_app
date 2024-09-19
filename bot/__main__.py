@@ -33,7 +33,7 @@ async def main():
     logger.info('Starting Bot')
 
     # Config
-    storage = RedisStorage(Redis(),
+    storage = RedisStorage(Redis(host='redis', port=6379, db=0),
                            key_builder=DefaultKeyBuilder(with_destiny=True))
 
     # Init Bot in Dispatcher

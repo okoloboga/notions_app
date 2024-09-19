@@ -42,5 +42,5 @@ async def create_tables():
 
 if __name__ == "__main__":
     asyncio.run(create_tables())
-    uvicorn.run(app, host="127.0.0.1", port=8000)
+    uvicorn.run(app, host="api", port=8000)
 

@@ -24,7 +24,7 @@ logging.basicConfig(
     format='%(filename)s:%(lineno)d #%(levelname)-8s '
            '[%(asctime)s] - %(name)s - %(message)s')
 
-r = aioredis.Redis(host='localhost', port=6379)
+r = aioredis.Redis(host='redis', port=6379, db=0)
 
 
 @router.message(CommandStart())
@@ -99,7 +99,8 @@ async def login_result(message: Message,
     user_id = message.from_user.id
     username = message.from_user.username
     i18n: TranslatorRunner = dialog_manager.middleware_data.get('i18n')
-
+    r = aioredis.Redis(host='redis', port=6379, db=0)
+    
     logger.info(f'User {username} in login process')
 
     response = await login(username, password)
@@ -233,6 +234,7 @@ async def confirm(callback: CallbackQuery,
     i18n: TranslatorRunner = dialog_manager.middleware_data.get('i18n')
     state: FSMContext = dialog_manager.middleware_data.get('state')
     completed_note = await state.get_data()
+    r = aioredis.Redis(host='redis', port=6379, db=0)
 
     logger.info(f'User {username} complete note: {completed_note}')
 
@@ -304,6 +306,7 @@ async def my_notes(callback: CallbackQuery,
     username = callback.from_user.username
     logger.info(f'User {username} get notes list')
     i18n: TranslatorRunner = dialog_manager.middleware_data.get('i18n')    
+    r = aioredis.Redis(host='redis', port=6379, db=0)
 
     if await r.exists(user_id) != 0:
         token = str(await r.get(user_id), encoding='utf-8')
@@ -360,6 +363,7 @@ async def tags_notes_list(message: Message,
     username = message.from_user.username
     logger.info(f'User {username} get notes list by tag')
     i18n: TranslatorRunner = dialog_manager.middleware_data.get('i18n')    
+    r = aioredis.Redis(host='redis', port=6379, db=0)
 
     # Check if the user is authenticated
     if await r.exists(user_id) != 0:

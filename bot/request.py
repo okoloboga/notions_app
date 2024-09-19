@@ -10,7 +10,7 @@ logging.basicConfig(
     format='%(filename)s:%(lineno)d #%(levelname)-8s '
            '[%(asctime)s] - %(name)s - %(message)s')
 
-URL = "http://127.0.0.1:8000"
+URL = "http://api:8000"
 
 
 # Регистрация нового пользователя

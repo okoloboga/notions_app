@@ -1,0 +1,11 @@
+aiogram==3.13.0
+aiogram_dialog==2.2.0
+environs==11.0.0
+fluentogram==1.1.7
+passlib==1.7.4
+python-dotenv==1.0.1
+python-multipart
+PyYAML==6.0.2
+redis==5.0.8
+requests==2.32.3
+

@@ -1,0 +1,16 @@
+environs==11.0.0
+fastapi==0.114.2
+limits==3.13.0
+passlib==1.7.4
+psycopg==3.1.19
+psycopg-binary==3.1.19
+pydantic==2.8.2
+pydantic_core==2.20.1
+python-dotenv==1.0.1
+python-multipart
+python-jose==3.3.0
+PyYAML==6.0.2
+slowapi==0.1.9
+SQLAlchemy==2.0.30
+uvicorn==0.30.6
+
