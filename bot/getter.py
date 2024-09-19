@@ -15,14 +15,18 @@ logging.basicConfig(
            '[%(asctime)s] - %(name)s - %(message)s')
 
 
-# Регистрация
 async def registration_getter(dialog_manager: DialogManager,
                               i18n: TranslatorRunner,
                               bot: Bot,
                               event_from_user: User,
                               **kwargs
                               ) -> dict:
+    """
+    Getter for registration menu.
     
+    Returns:
+        dict: Dictionary with registration message for user.
+    """
     username = event_from_user.username
     
     logger.info(f'User {username} in registration menu')
@@ -30,14 +34,20 @@ async def registration_getter(dialog_manager: DialogManager,
     return {'registration': i18n.registration(username=username)}
 
 
-# Авторизация
+
+
 async def login_getter(dialog_manager: DialogManager,
                        i18n: TranslatorRunner,
                        bot: Bot,
                        event_from_user: User,
                        **kwargs
                        ) -> dict:
+    """
+    Getter for login menu.
     
+    Returns:
+        dict: Dictionary with login message for user.
+    """
     username = event_from_user.username
     
     logger.info(f'User {username} in login menu')
@@ -45,14 +55,18 @@ async def login_getter(dialog_manager: DialogManager,
     return {'login': i18n.login(username=username)}
 
 
-# Главное Меню
 async def main_getter(dialog_manager: DialogManager,
                       i18n: TranslatorRunner,
                       bot: Bot,
                       event_from_user: User,
                       **kwargs
                       ) -> dict:
-
+    """
+    Getter for main menu.
+    
+    Returns:
+        dict: Dictionary with main message for user and buttons.
+    """
     username = event_from_user.username
     
     logger.info(f'User {username} in main menu')
@@ -62,15 +76,19 @@ async def main_getter(dialog_manager: DialogManager,
             'button_my_notes': i18n.button.my.notes()}
 
 
-'''Создание записи'''
-# Ввод заголовка
+'''Create Note process'''
 async def title_getter(dialog_manager: DialogManager,
                        i18n: TranslatorRunner,
                        bot: Bot,
                        event_from_user: User,
                        **kwargs
                        ) -> dict:
+    """
+    Getter for title menu.
     
+    Returns:
+        dict: Dictionary with title message for user.
+    """
     username = event_from_user.username
     
     logger.info(f'User {username} filling title')
@@ -78,14 +96,18 @@ async def title_getter(dialog_manager: DialogManager,
     return {'fill_title': i18n.fill.title()}
 
 
-# Ввод содержания
 async def content_getter(dialog_manager: DialogManager,
                          i18n: TranslatorRunner,
                          bot: Bot,
                          event_from_user: User,
                          **kwargs
                          ) -> dict:
+    """
+    Getter for content menu.
     
+    Returns:
+        dict: Dictionary with content message for user.
+    """
     username = event_from_user.username
     
     logger.info(f'User {username} filling content')
@@ -93,14 +115,18 @@ async def content_getter(dialog_manager: DialogManager,
     return {'fill_content': i18n.fill.content()}
 
 
-# Ввод Тэгов
 async def tags_getter(dialog_manager: DialogManager,
                       i18n: TranslatorRunner,
                       bot: Bot,
                       event_from_user: User,
                       **kwargs
                       ) -> dict:
+    """
+    Getter for tags menu.
     
+    Returns:
+        dict: Dictionary with tags message for user.
+    """
     username = event_from_user.username
     
     logger.info(f'User {username} filling tags')
@@ -108,29 +134,37 @@ async def tags_getter(dialog_manager: DialogManager,
     return {'fill_tags': i18n.fill.tags()}
 
 
-# Завершение создания записи
 async def complete_getter(dialog_manager: DialogManager,
                           i18n: TranslatorRunner,
                           bot: Bot,
                           event_from_user: User,
                           **kwargs
                           ) -> dict:
-
+    """
+    Getter for complete menu.
+    
+    Returns:
+        dict: Dictionary with complete message for user and buttons.
+    """
     username = event_from_user.username
     state: FSMContext = dialog_manager.middleware_data.get('state')
     note = await state.get_data()
-    # title = note['title']
-    # content = note['content']
-    # tags = note['tags']
+    
+    # Get note data from state
+    title = note['title']
+    content = note['content']
+    tags = note['tags']
 
-    logger.info(f'User {username} completing create note:\n{note}')
+    logger.info(f'User {username} completing create note:\n'
+                f'Title: {title}\n'
+                f'Content: {content}\n'
+                f'Tags: {tags}')
 
-    return {'complete_note': i18n.complete.note(**note),
+
+    return {'complete_note': i18n.complete.note(title=title,
+                                                content=content,
+                                                tags=tags),
             'button_confirm': i18n.button.confirm(),
             'button_cancel': i18n.button.cancel()}
-
-
-
-
 
 

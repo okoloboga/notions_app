@@ -2,14 +2,16 @@ from pydantic import BaseModel
 from typing import List
 from datetime import datetime
 
-'''
-Создание схем для проверки типов данных при помощи pydantic
-'''
+
 class UserBase(BaseModel):
     username: str
 
 
 class UserCreate(UserBase):
+    password: str
+
+
+class Token(BaseModel):
     password: str
 
 

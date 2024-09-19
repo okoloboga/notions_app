@@ -83,7 +83,7 @@ complete-note = Завершение создания заметки
 
                 <b>{ $title }</b>
 
-                <b>{ $content }</b>
+                { $content }
 
                 <b>{ $tags }</b>
 
@@ -93,12 +93,22 @@ note-created = Запись создана!
 
 canceled = Отменено!
 
+shownote = Заголовок: <b>{ $title }</b>
+           
+           { $content }
+
+           тэги: 
+           { $tags }
+
 
 unknown-message = Ты написал что-то непонятное...
 
 
 invalid-token = Срок сессии окончен! 
                 Зайди с использованием пароля снова
+
+
+no-notes = Нет записей!
 
 
 error = Неизвестная ошибка!

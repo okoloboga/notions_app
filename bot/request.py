@@ -16,15 +16,15 @@ URL = "http://127.0.0.1:8000"
 # Регистрация нового пользователя
 async def new_user(username: str,
                    password: str):
-    params = {
+    payload = {
         "username": username,
         "password": password
     }
 
-    logger.info(f'new_user params: {params}')
+    logger.info(f'new_user {username}')
 
-    response = requests.post(f'{URL}/users', 
-                             json=params, 
+    response = requests.post(f'{URL}/users/', 
+                             json=payload, 
                              timeout=1)
 
     logger.info(f'result registration: {response.status_code}')
@@ -35,15 +35,16 @@ async def new_user(username: str,
 # Аутентификация
 async def login(username: str,
                 password: str):
-    params = {
-        "username": username,
-        "password": password
+    payload = {
+       "grant_type": "password",
+       "username": username,
+       "password": password
     }
 
-    logger.info(f'login {params}')
+    logger.info(f'login {username}')
 
-    response = requests.post(f'{URL}/token',
-                             json=params, 
+    response = requests.post(f'{URL}/token/',
+                             data=payload, 
                              timeout=1)
 
     logger.info(f'login status code: {response.status_code}')
@@ -52,23 +53,27 @@ async def login(username: str,
 
 
 # Создание новой записи
-async def create_note(data: dict,
-                      headers: dict):
-    response = requests.post(f'{URL}/notes',
+async def new_note(data: dict, 
+                   headers: dict):
+    
+    logger.info(f'create_note: {data}')
+
+    response = requests.post(f'{URL}/notes/',
                              json=data,
                              headers=headers,
                              timeout=1)
 
-    answer = response.get("replies")
+    logger.info(f'result create_note {response}')
 
-    logger.info(f'result create_note {answer}, {response}')
-
-    return answer
+    return response
 
 
 # Получение записей
 async def notes(headers: dict):
-    response = requests.get(f'{URL}/notes', 
+
+    logger.info(f'getting notes headers: {headers}')
+
+    response = requests.get(f'{URL}/notes/', 
                             headers=headers, 
                             timeout=1)
 

@@ -36,7 +36,7 @@ dialog = Dialog(
         Format('{main_menu}'),
         Button(Format('{button_create_note}'), id='b_create_note', on_click=create_note),
         
-        # Однажды, они потребуются...
+        # Oneday, we will use it...
 
         # Row(
         #     Button(Format('{button_delete_note}'), id='b_delete_note', on_click=delete_note),
@@ -95,8 +95,7 @@ dialog = Dialog(
         )
     )
     
-    # Заготовка для расширения функционала по удалению и редактированию
-    # заметок через бота
+    # Templates for new funcs - edit and delete Notes
 
     # Window(
     #     Format('{delete_note}'),

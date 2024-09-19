@@ -3,6 +3,14 @@ from fluentogram import FluentTranslator, TranslatorHub
 
 
 def create_translator_hub() -> TranslatorHub:
+    
+    """
+    Creates a TranslatorHub object with multiple FluentTranslator objects.
+
+    Returns:
+        TranslatorHub: The created TranslatorHub object.
+    """
+
     translator_hub = TranslatorHub(
         {
             "ru": ("ru", "en"),

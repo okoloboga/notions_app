@@ -15,12 +15,28 @@ app.state.limiter = limiter
 
 
 @app.middleware
-async def rate_limit_middleware(request: Request, call_next):
+async def rate_limit_middleware(request: Request, call_next):   
+    """
+    A middleware function that limits the number of requests to the API based on the IP address of the client.
+
+    Parameters:
+        request (Request): The incoming request object.
+        call_next: The next middleware or application to call.
+
+    Returns:
+        Response: The response from the next middleware or application.
+    """
     return await limiter.limit_request(request)(call_next)
 
 
-# Создание таблиц
+
 async def create_tables():
+    """
+    Create tables in the database.
+
+    This function asynchronously creates tables in the database. It uses the `engine` object to create a connection
+    and then executes the `Base.metadata.create_all()` method
+    """
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 

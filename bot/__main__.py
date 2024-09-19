@@ -20,9 +20,10 @@ from middleware import TranslatorRunnerMiddleware
 logger = logging.getLogger(__name__)
 
 
-# Конфигурация и запуск Бота
 async def main():
-
+    """
+    Main function of the Bot.
+    """
     # Logging
     logging.basicConfig(
         level=logging.INFO,
@@ -47,14 +48,17 @@ async def main():
     # Routers, dialogs, middlewares
     dp.include_routers(dialog, router, unknown_router)
 
+    # Register middleware to the Dispatcher
     dp.update.middleware(TranslatorRunnerMiddleware())
 
+    # Init Dialogs
     setup_dialogs(dp)
 
     # Skipping old updates
     await bot.delete_webhook(drop_pending_updates=True)
     await dp.start_polling(bot, _translator_hub=translator_hub)
     return bot
+
 
 if __name__ == '__main__':
     asyncio.run(main())
