@@ -37,11 +37,11 @@ async def command_start_getter(message: Message,
     logger.info(f'User {username} start Bot')
 
     # Проверка сущесвования пользователя в БД
-    exists = await new_user(username=username,
-                            password='')
-    logger.info(f'Is user {username} exists?')
+    response = await login(username=username,
+                           password='')
+    logger.info(f'Is user {username} exists {response.status_code}?')
 
-    if exists:
+    if response.status_code == 200:
         await dialog_manager.start(state=MainSG.login)
     else:
         await dialog_manager.start(state=MainSG.registration)
@@ -62,7 +62,7 @@ async def registration_result(message: Message,
     
     logger.info(f'Registration result: {result}')
 
-    if result:
+    if result is not None:
         await message.answer(text=i18n.registration.complete())
         await dialog_manager.switch_to(state=MainSG.login)
     else:

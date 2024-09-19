@@ -17,6 +17,14 @@ class DbConfig(BaseModel):
     is_echo: bool
 
 
+class Salt(BaseModel):
+    key: str
+
+
+class JWT(BaseModel):
+    key: str
+
+
 @lru_cache(maxsize=1)
 def parse_config_file() -> dict:
     with open ("config.yaml", "rb") as file:

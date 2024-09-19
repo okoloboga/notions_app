@@ -2,8 +2,6 @@ import requests
 import logging
 import json
 
-from passlib.context import CryptContext
-
 
 logger = logging.getLogger(__name__)
 
@@ -13,43 +11,44 @@ logging.basicConfig(
            '[%(asctime)s] - %(name)s - %(message)s')
 
 URL = "http://127.0.0.1:8000"
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 # Регистрация нового пользователя
 async def new_user(username: str,
                    password: str):
-
-    hashed_password = pwd_context.hash(password)
     params = {
         "username": username,
-        "password": hashed_password
+        "password": password
     }
-    response = requests.post(f'{URL}/users', json=json.dumps(params), timeout=1).json()
-    answer = response.get("replies")
 
-    logger.info(f'result registration: {answer}')
+    logger.info(f'new_user params: {params}')
 
-    return answer
+    response = requests.post(f'{URL}/users', 
+                             json=params, 
+                             timeout=1)
+
+    logger.info(f'result registration: {response.status_code}')
+
+    return response.status_code
 
 
 # Аутентификация
 async def login(username: str,
                 password: str):
-
-    hashed_password = pwd_context.hash(password)
     params = {
         "username": username,
-        "password": hashed_password
+        "password": password
     }
+
+    logger.info(f'login {params}')
+
     response = requests.post(f'{URL}/token',
-                             json=json.dumps(params), 
-                             timeout=1).json()
-    answer = response.get("replies")
+                             json=params, 
+                             timeout=1)
 
-    logger.info(f'result token: {answer}')
+    logger.info(f'login status code: {response.status_code}')
 
-    return answer
+    return response
 
 
 # Создание новой записи
@@ -58,10 +57,11 @@ async def create_note(data: dict,
     response = requests.post(f'{URL}/notes',
                              json=data,
                              headers=headers,
-                             timeout=1).json()
+                             timeout=1)
+
     answer = response.get("replies")
 
-    logger.info(f'result create_note {answer}')
+    logger.info(f'result create_note {answer}, {response}')
 
     return answer
 
@@ -70,7 +70,10 @@ async def create_note(data: dict,
 async def notes(headers: dict):
     response = requests.get(f'{URL}/notes', 
                             headers=headers, 
-                            timeout=1).json()
+                            timeout=1)
+
+    logger.info(f'getting notes {response}')
+    
     return response
 
 
@@ -79,7 +82,10 @@ async def notes_tag(tag: str,
                     headers: dict):
     response = requests.get(f'{URL}/notes/tags/{tag}',  
                             headers=headers,   
-                            timeout=1).json()
+                            timeout=1)
+    
+    logger.info(f'tags search {response}')
+
     return response
 
 

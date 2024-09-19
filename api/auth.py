@@ -12,6 +12,7 @@ from sqlalchemy.future import select
 from models import User
 from schemas import UserCreate
 from database import SessionLocal
+from config import get_config, Salt, JWT
 
 logger = logging.getLogger(__name__)
 
@@ -20,7 +21,8 @@ logging.basicConfig(
     format='%(filename)s:%(lineno)d #%(levelname)-8s '
            '[%(asctime)s] - %(name)s - %(message)s')
 
-SECRET_KEY = "your_secret_key"  # замените на ваш секретный ключ
+SALT = get_config(Salt, 'salt')
+SECRET_KEY = get_config(JWT, 'jwt')
 ALGORITHM = "HS256"
 ACCESS_TOKEN_EXPIRE_MINUTES = 30
 
@@ -36,11 +38,14 @@ async def get_db() -> AsyncSession:
 
 def verify_password(plain_password, 
                     hashed_password):
+    
+    logger.info(f'verify_password: {plain_password}, {hashed_password}')
+
     return pwd_context.verify(plain_password, hashed_password)
 
-
-def get_password_hash(password):
-    return pwd_context.hash(password)
+def encrypt_password(password):
+    hashed_password = pwd_context.hash(password)
+    return hashed_password
 
 
 async def get_user(db: AsyncSession, 
@@ -58,7 +63,7 @@ async def create_user(db: AsyncSession,
 
     logger.info(f'create user with username: {user.username}')
 
-    db_user = User(username=user.username, password=get_password_hash(user.password))
+    db_user = User(username=user.username, password=encrypt_password(user.password))
     db.add(db_user)
     await db.commit()
     await db.refresh(db_user)
@@ -67,6 +72,9 @@ async def create_user(db: AsyncSession,
 
 def create_access_token(data: dict, 
                         expires_delta: Optional[timedelta] = None):
+
+    logger.info(f'creating token {data}')
+
     to_encode = data.copy()
     if expires_delta:
         expire = datetime.utcnow() + expires_delta
